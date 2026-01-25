@@ -1,0 +1,150 @@
+.skills-section {
+  min-height: 100vh;
+  width: 100vw; /* 每个section占满视口宽度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  margin: 40px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0; /* 防止压缩 */
+}
+
+.skills-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+  margin-bottom: 60px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.skills-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.skills-ring {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skills-ring.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.skills-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+  transition: var(--transition);
+}
+
+.skill-arc {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skill-arc:hover {
+  transform-origin: center;
+}
+
+.skills-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.skill-label {
+  position: absolute;
+  pointer-events: all;
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition);
+  z-index: 10;
+}
+
+.skill-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--glass-bg-light);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  padding: 8px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+
+.skill-label.active .skill-name {
+  background: var(--glass-bg-dark);
+  transform: scale(1.15);
+  box-shadow: 0 4px 20px rgba(42, 157, 143, 0.4);
+}
+
+.skill-percentage {
+  display: block;
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .skills-ring {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .skill-name {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

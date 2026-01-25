@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* 白天模式 - 森系风格 */
+  --bg-primary: #f8f5f0; /* 柔和的米白色 */
+  --color-primary: #95b564; /* 富有生机的黄绿色 */
+  --color-accent: #56653c; /* 沉稳的橄榄绿色 */
+  --text-primary: #121106; /* 接近黑色的深墨绿 */
+  --text-secondary: #afb794; /* 灰调豆沙绿 */
+  
+  /* 玻璃态效果 */
+  --glass-bg-light: rgba(203, 213, 186, 0.1); /* 浅灰绿色 */
+  --glass-bg-dark: rgba(175, 183, 148, 0.1); /* 灰调豆沙绿 */
+  --glass-border: rgba(203, 213, 186, 0.2);
+  
+  /* 过渡动画 */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  /* 夜晚模式 - 深色森系 */
+  --bg-primary: #1a1f0f; /* 深墨绿背景 */
+  --color-primary: #95b564; /* 保持黄绿色 */
+  --color-accent: #cbd5ba; /* 浅灰绿色作为强调 */
+  --text-primary: #f8f5f0; /* 米白色文字 */
+  --text-secondary: #cbd5ba; /* 浅灰绿色 */
+  
+  --glass-bg-light: rgba(26, 31, 15, 0.3);
+  --glass-bg-dark: rgba(0, 0, 0, 0.2);
+  --glass-border: rgba(203, 213, 186, 0.1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary); /* 主要背景色 */
+  color: var(--text-primary);
+  transition: var(--transition);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px; /* 为横向滚动条设置高度 */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}

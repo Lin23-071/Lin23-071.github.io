@@ -1,0 +1,68 @@
+.navigation {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) translateX(-100%);
+  z-index: 10; /* 降低z-index，避免覆盖内容 */
+  transition: var(--transition);
+  padding: 20px 0;
+}
+
+.navigation.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+.nav-content {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-left: none;
+  border-radius: 0 16px 16px 0;
+  padding: 30px 20px;
+  display: flex;
+  justify-content: center;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  transition: var(--transition);
+  padding: 10px 20px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: var(--color-primary);
+  transition: var(--transition);
+  z-index: -1;
+}
+
+.nav-links a:hover {
+  color: var(--bg-primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}

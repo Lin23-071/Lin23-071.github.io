@@ -1,0 +1,770 @@
+.expanded-paper {
+  transition: all 0.7s cubic-bezier(.22,.61,.36,1);
+  filter: url(#paperWrinkle);
+  background: linear-gradient(90deg, #e5dcc3 0%, #e5dcc3 30%, #f7f3e8 30%, #f7f3e8 100%) !important;
+  border-radius: 28px 36px 24px 32px/32px 28px 36px 24px !important;
+  box-shadow: 0 12px 48px 0 rgba(120,100,60,0.13) !important;
+  z-index: 1020 !important;
+  position: fixed !important;
+  top: 15% !important;
+  left: 15% !important;
+  width: 70vw !important;
+  height: 70vh !important;
+}
+.blank-paper {
+  background: #f7f3e8;
+  filter: url(#paperWrinkle);
+  border-radius: 18px 22px 16px 20px/22px 18px 20px 16px;
+  border: 1.5px solid #e5dcc3;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  transition: opacity 0.6s, box-shadow 0.6s;
+}
+:root {
+  --color-primary: #95b564; /* 富有生机的黄绿色 */
+  --bg-blur: 10px;
+  --wrinkle-scale: 6;
+}
+
+.hero {
+  min-height: 100vh;
+  width: 100vw; /* 每个section占满视口宽度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 40px 20px;
+  flex-shrink: 0; /* 防止压缩 */
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(var(--bg-blur));
+  -webkit-backdrop-filter: blur(var(--bg-blur));
+  z-index: 1;
+  pointer-events: none;
+}
+
+.floating-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  opacity: 0.1;
+  animation: float 20s infinite linear;
+}
+
+.shape-1 {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 150px;
+  height: 150px;
+  top: 20%;
+  left: 30%;
+  animation-delay: -5s;
+}
+
+.interactive-cards {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.card {
+  position: absolute;
+  border-radius: 18px 22px 16px 20px/22px 18px 20px 16px; /* 纸条感：长方形+轻微不规则 */
+  background: #f7f3e8;
+  filter: url(#paperWrinkle);
+  border: 1.5px solid #e5dcc3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  font-weight: 600;
+  color: var(--text-color);
+  transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 160px;
+  min-height: 48px;
+  max-width: 320px;
+  aspect-ratio: 3.5/1;
+  padding: 18px 32px;
+  letter-spacing: 0.02em;
+}
+
+.card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card:active {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.card.expanded {
+  border-radius: 20px;
+  z-index: 1010!important;
+  cursor: default;
+  font-size: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.card.squeezed {
+  opacity: 0.7;
+}
+
+
+
+/* 为了保证在不同视口下圆角看起来合理，rect 的 rx/ry 在 SVG 中使用相对 viewBox 单位 (这里用 3 表示小圆角) */
+
+.card-about {
+  width: 220px;
+  height: 56px;
+  top: 15%;
+  left: 8%;
+  --rotation: 2deg;
+  --orig-width: 220px;
+  --orig-height: 56px;
+  --orig-top: 15%;
+  --orig-left: 8%;
+  --squeeze-x: -120vw;
+  border-radius: 18px 22px 16px 20px/22px 18px 20px 16px;
+  animation: flow-about 4s ease-in-out infinite;
+}
+
+@keyframes flow-about {
+  0%, 100% { border-radius: 60% 40% 70% 30%; }
+  50% { border-radius: 55% 45% 65% 35%; }
+}
+
+.card-about:hover {
+  transform: scale(1.1) translateY(-10px) rotate(3deg);
+}
+
+.card-about:active {
+  transform: scale(0.95) translateY(-10px) rotate(3deg);
+}
+
+.card-skills {
+  width: 180px;
+  height: 48px;
+  top: 35%;
+  left: 65%;
+  --rotation: -3deg;
+  --orig-width: 180px;
+  --orig-height: 48px;
+  --orig-top: 35%;
+  --orig-left: 65%;
+  --squeeze-x: 120vw;
+  border-radius: 20px 18px 22px 16px/16px 22px 18px 20px;
+  animation: flow-skills 4s ease-in-out infinite;
+}
+
+@keyframes flow-skills {
+  0%, 100% { border-radius: 50% 60% 40% 80%; }
+  50% { border-radius: 45% 65% 35% 85%; }
+}
+
+.card-skills:hover {
+  transform: scale(1.1) translateY(-10px) rotate(-8deg);
+}
+
+.card-skills:active {
+  transform: scale(0.95) translateY(-10px) rotate(-8deg);
+}
+
+.card-contact {
+  width: 200px;
+  height: 52px;
+  top: 60%;
+  left: 20%;
+  --rotation: 4deg;
+  --orig-width: 200px;
+  --orig-height: 52px;
+  --orig-top: 60%;
+  --orig-left: 20%;
+  --squeeze-x: -120vw;
+  border-radius: 20px 16px 18px 22px/22px 20px 16px 18px;
+  animation: flow-contact 4s ease-in-out infinite;
+}
+
+@keyframes flow-contact {
+  0%, 100% { border-radius: 70% 30% 60% 40%; }
+  50% { border-radius: 65% 35% 55% 45%; }
+}
+
+.card-contact:hover {
+  transform: scale(1.1) translateY(-10px) rotate(5deg);
+}
+
+.card-contact:active {
+  transform: scale(0.95) translateY(-10px) rotate(5deg);
+}
+
+.card-fun {
+  width: 160px;
+  height: 44px;
+  top: 70%;
+  left: 70%;
+  --rotation: -2deg;
+  --orig-width: 160px;
+  --orig-height: 44px;
+  --orig-top: 70%;
+  --orig-left: 70%;
+  --squeeze-x: 120vw;
+  border-radius: 18px 20px 22px 16px/20px 18px 16px 22px;
+  animation: flow-fun 4s ease-in-out infinite;
+}
+
+@keyframes flow-fun {
+  0%, 100% { border-radius: 40% 70% 50% 60%; }
+  50% { border-radius: 35% 75% 45% 65%; }
+}
+
+.card-fun:hover {
+  transform: scale(1.1) translateY(-10px) rotate(-3deg);
+}
+
+.card-fun:active {
+  transform: scale(0.95) translateY(-10px) rotate(-3deg);
+}
+
+
+.card.expanded {
+  position: fixed;
+  top: 15%;
+  left: 15%;
+  width: 70vw;
+  height: 70vh;
+  border-radius: 20px;
+  z-index: 1000;
+  transform: none;
+  animation: expand 0.5s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+  cursor: default;
+  font-size: 16px;
+  padding: 0; /* 移除padding，让modal-content自己处理 */
+  box-sizing: border-box;
+  overflow-y: auto;
+  filter: none;
+}
+
+/* 纸团展开动画 */
+
+
+@keyframes paper-unfold {
+  0% {
+    border-radius: 60% 40% 70% 30%/50% 60% 40% 80%;
+    transform: scale(0.7) rotate(-12deg) skew(-8deg, 6deg);
+    filter: blur(2px) brightness(0.95) contrast(1.1);
+    box-shadow: 0 0 0 0 rgba(149,182,100,0.12);
+  }
+  20% {
+    border-radius: 55% 45% 65% 35%/55% 65% 35% 85%;
+    transform: scale(0.85) rotate(-6deg) skew(-4deg, 3deg);
+    filter: blur(1.2px) brightness(1.02) contrast(1.08);
+    box-shadow: 0 8px 32px 0 rgba(149,182,100,0.15);
+  }
+  40% {
+    border-radius: 40% 60% 50% 70%/60% 40% 70% 30%;
+    transform: scale(1.05) rotate(3deg) skew(2deg, -2deg);
+    filter: blur(0.7px) brightness(1.05) contrast(1.04);
+    box-shadow: 0 12px 40px 0 rgba(149,182,100,0.18);
+  }
+  60% {
+    border-radius: 30% 70% 40% 60%/70% 30% 60% 40%;
+    transform: scale(1.08) rotate(-2deg) skew(-1deg, 1deg);
+    filter: blur(0.3px) brightness(1.08) contrast(1.02);
+    box-shadow: 0 16px 60px 0 rgba(149,182,100,0.22);
+  }
+  80% {
+    border-radius: 25% 75% 35% 65%/75% 25% 65% 35%;
+    transform: scale(1.03) rotate(1deg) skew(0deg, 0deg);
+    filter: blur(0.1px) brightness(1.04) contrast(1.01);
+    box-shadow: 0 16px 60px 0 rgba(149,182,100,0.23);
+  }
+  100% {
+    border-radius: 20px;
+    transform: scale(1) rotate(0deg) skew(0deg, 0deg);
+    filter: none;
+    box-shadow: 0 16px 60px 0 rgba(149,182,100,0.25), 0 0 0 8px rgba(149,182,100,0.08);
+  }
+}
+
+.card.squeezed {
+  animation: squeeze 0.5s ease-out forwards;
+}
+
+.squeezed-left {
+  transform: translateX(-120vw) scale(0.3);
+  opacity: 0;
+}
+
+.squeezed-right {
+  transform: translateX(120vw) scale(0.3);
+  opacity: 0;
+}
+
+@keyframes expand {
+  0% {
+    width: var(--orig-width);
+    height: var(--orig-height);
+    top: var(--orig-top);
+    left: var(--orig-left);
+    border-radius: 60% 40% 70% 30%;
+    font-size: 16px;
+    padding: 0;
+  }
+  100% {
+    width: 70vw;
+    height: 70vh;
+    top: 15%;
+    left: 15%;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 20px;
+  }
+}
+
+@keyframes squeeze {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--squeeze-x)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.modal-container {
+  width: 70vw;
+  height: 70vh;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.modal-content {
+  position: absolute;
+  right: 0.5rem; /* 向右移动 */
+  top: 1rem; /* 向上移动 */
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* 内容向上对齐 */
+  text-align: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.modal-sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* 文字靠下对齐 */
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.modal-sidebar-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'Georgia', serif;
+  color: var(--text-color);
+  font-size: 1.2em;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.modal-content p, .modal-content ul {
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-content li {
+  margin: 10px 0;
+}
+
+.shape-3 {
+  width: 100px;
+  height: 100px;
+  bottom: 20%;
+  left: 20%;
+  animation-delay: -10s;
+}
+
+.shape-4 {
+  width: 180px;
+  height: 180px;
+  bottom: 10%;
+  left: 40%;
+  animation-delay: -15s;
+}
+
+.shape-5 {
+  width: 120px;
+  height: 120px;
+  top: 50%;
+  left: 60%;
+  animation-delay: -7s;
+}
+
+.shape-6 {
+  width: 90px;
+  height: 90px;
+  top: 30%;
+  left: 70%;
+  animation-delay: -12s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(360deg);
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #f7f3e8; /* 柔和米色 */
+  filter: url(#paperWrinkle);
+  border: 1px solid #e5dcc3;
+  border-radius: 32px;
+  padding: 80px 60px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-primary);
+  position: relative;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.typed-text {
+  display: inline-block;
+}
+
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--color-primary);
+  margin-left: 4px;
+  animation: blink 1s infinite;
+  vertical-align: baseline;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.ripple-1 {
+  animation: ripple-animation 1.5s ease-out forwards;
+}
+
+.ripple-2 {
+  animation: ripple-animation 1.5s ease-out 0.2s forwards;
+  opacity: 0.4;
+}
+
+.ripple-3 {
+  animation: ripple-animation 1.5s ease-out 0.4s forwards;
+  opacity: 0.3;
+}
+
+@keyframes ripple-animation {
+  0% {
+    width: 20px;
+    height: 20px;
+    opacity: 0.6;
+  }
+  100% {
+    width: 800px;
+    height: 800px;
+    opacity: 0;
+  }
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--text-secondary);
+  margin-top: 30px;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 2s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* SVG滤镜注入到body底部，确保全局可用 */
+body::after {
+  content: '';
+  position: fixed;
+  width: 0; height: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 你需要在index.html <body>内添加如下SVG定义：
+<svg width="0" height="0" style="position:absolute">
+  <filter id="paperWrinkle">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035 0.09" numOctaves="3" seed="7" result="turb"/>
+    <feDisplacementMap in2="turb" in="SourceGraphic" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+    <feGaussianBlur stdDeviation="0.3"/>
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="0.98"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+*/
+
+@media (max-width: 768px) {
+  .hero-title {
+    min-height: 80px;
+  }
+  
+  .hero-content {
+    padding: 20px;
+  }
+
+  /* 小屏幕下的纸条和右侧区域响应式调整 */
+  .expanded-paper {
+    top: 10% !important;
+    left: 5% !important;
+    width: 90vw !important;
+    height: 80vh !important;
+  }
+
+  .side-paper {
+    top: 10% !important;
+    left: 95% !important; /* 隐藏在右侧 */
+    width: 0 !important;
+    height: 80vh !important;
+  }
+}
+
+/* 纸条右侧米色区域 */
+.side-paper {
+  position: fixed;
+  top: 15%;
+  left: 35%;
+  width: 50vw;
+  height: 70vh;
+  background: #f7f3e8; /* 米色 */
+  filter: url(#paperWrinkle);
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1015; /* 低于纸条但高于背景 */
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+  overflow: hidden; /* 确保内容不超出边界 */
+}
+
+.paper-corner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: #dbcdbc; /* 深棕色 */
+  box-shadow: 
+    -4px -4px 8px rgba(0, 0, 0, 0.2),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1);
+  transform: rotate(-5deg);
+  transform-origin: bottom right;
+  cursor: pointer;
+  transition: transform 0.4s ease, opacity 0.5s ease;
+  z-index: 1020;
+}
+
+.brown-paper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e7d2b8 0%, #6b5b47 50%, #a0885c 100%);
+  filter: url(#paperWrinkle);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(230, 216, 216, 0.15);
+  animation: paperSlideIn 0.8s ease-out;
+  z-index: 1030;
+}
+
+.brown-paper-content {
+  padding: 2rem;
+  font-family: 'Georgia', serif;
+  color: #8a8167;
+  line-height: 1.6;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brown-paper-content h3 {
+  margin-top: 0;
+  color: #e8dcc0;
+  font-size: 1.6em;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brown-paper-content p {
+  margin-bottom: 1rem;
+  font-size: 1em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes paperSlideIn {
+  0% {
+    transform: translateX(120%) translateY(120%) rotate(-45deg) scale(0.8);
+    opacity: 0;
+  }
+  30% {
+    transform: translateX(80%) translateY(80%) rotate(-30deg) scale(0.9);
+    opacity: 0.3;
+  }
+  70% {
+    transform: translateX(30%) translateY(30%) rotate(-15deg) scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+.side-paper-content {
+  padding: 2rem;
+  font-family: 'Georgia', serif;
+  color: #8b7355;
+  line-height: 1.6;
+}
+
+.side-paper-content h3 {
+  margin-top: 0;
+  color: #a0885c;
+  font-size: 1.4em;
+  margin-bottom: 1rem;
+}
+
+.side-paper-content p {
+  margin-bottom: 1rem;
+  font-size: 1em;
+}
+
+

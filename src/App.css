@@ -1,0 +1,66 @@
+:root {
+  --glass-bg-light: rgba(203, 213, 186, 0.1);
+  --glass-bg-dark: rgba(175, 183, 148, 0.1);
+  --glass-border: rgba(203, 213, 186, 0.2);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --color-light: #121106;
+  --color-dark: #f8f5f0;
+}
+
+[data-theme='light'] {
+  --glass-bg: var(--glass-bg-light);
+  --text-color: var(--color-light);
+  --background-color: #f8f5f0;
+}
+
+[data-theme='dark'] {
+  --glass-bg: var(--glass-bg-dark);
+  --text-color: var(--color-dark);
+  --background-color: #1a1f0f;
+}
+
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: var(--transition);
+  overflow-x: auto; /* 横向滚动 */
+  overflow-y: auto; /* 允许纵向滚动以防内容溢出 */
+}
+
+.app {
+  position: relative;
+  min-height: 100vh; /* 最小高度 */
+  width: 100%; /* 宽度100% */
+  background-image: url('/壁纸-绿色-车站.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+}
+
+.horizontal-scroll-container {
+  display: flex;
+  min-height: 100vh;
+  width: max-content; /* 内容决定宽度 */
+  flex-direction: row; /* 水平排列 */
+  cursor: grab;
+  user-select: none; /* 防止文本选择 */
+}
+
+.horizontal-scroll-container:active {
+  cursor: grabbing;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.smooth-transition {
+  transition: var(--transition);
+}
