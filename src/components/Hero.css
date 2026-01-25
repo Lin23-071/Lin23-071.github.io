@@ -1,4 +1,6 @@
-﻿.expanded-paper {
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&display=swap');
+
+.expanded-paper {
   transition: all 0.7s cubic-bezier(.22,.61,.36,1);
   filter: url(#paperWrinkle);
   background: linear-gradient(90deg, #e5dcc3 0%, #e5dcc3 30%, #f7f3e8 30%, #f7f3e8 100%) !important;
@@ -11,7 +13,6 @@
   width: 70vw !important;
   height: 70vh !important;
 }
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&display=swap');
 .blank-paper {
   background: #f7f3e8;
   filter: url(#paperWrinkle);

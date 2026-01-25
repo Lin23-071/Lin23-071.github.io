@@ -3,7 +3,6 @@ import './Hero.css'
 
 const Hero = () => {
   const [displayedText, setDisplayedText] = useState('')
-  const [showRipple, setShowRipple] = useState(false)
   const [showCursor, setShowCursor] = useState(true)
   const [selectedCard, setSelectedCard] = useState<'about' | 'skills' | 'contact' | 'fun' | null>(null)
   const [expandCount, setExpandCount] = useState(0)
@@ -20,7 +19,7 @@ const Hero = () => {
 
   const fullText = 'Glad to see you ! :D'
   const typingSpeed = 100
-  const [droplets, setDroplets] = useState([
+  const droplets = [
     // 主功能卡片
     { id: 'about', x: 8, y: 15, scaleX: 1, scaleY: 1, rotation: 2, width: 220, height: 56, z: 2 },
     { id: 'skills', x: 65, y: 35, scaleX: 1, scaleY: 1, rotation: -3, width: 180, height: 48, z: 2 },
@@ -33,11 +32,8 @@ const Hero = () => {
     { id: 'blank4', x: 55, y: 60, scaleX: 1, scaleY: 1, rotation: -7, width: 180, height: 50, z: 3, opacity: 0.75 },
     { id: 'blank5', x: 35, y: 78, scaleX: 1, scaleY: 1, rotation: 4, width: 220, height: 56, z: 1, opacity: 0.77 },
     { id: 'blank6', x: 78, y: 52, scaleX: 1, scaleY: 1, rotation: 10, width: 140, height: 40, z: 3, opacity: 0.7 },
-  ])
-  const heroRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  ]
   const collageRef = useRef<HTMLDivElement>(null)
-  const collageTypes = ['project', 'blog', 'gallery', 'contact']
 
   const getCollageTypes = () => {
     switch (selectedCard) {
@@ -155,10 +151,6 @@ const Hero = () => {
         // 隐藏光标
         setTimeout(() => {
           setShowCursor(false)
-          // 显示涟漪效果
-          setTimeout(() => {
-            setShowRipple(true)
-          }, 300)
         }, 500)
       }
     }, typingSpeed)
