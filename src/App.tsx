@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Footer from './components/Footer';
 import ThemeToggle from './components/ThemeToggle';
 import './App.css';
 
