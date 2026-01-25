@@ -632,31 +632,279 @@ body::after {
 */
 
 @media (max-width: 768px) {
-  .hero-title {
-    min-height: 80px;
+  /* 移动端通用样式 */
+  .hero {
+    padding: 20px 10px;
+    min-height: 100vh;
   }
-  
+
+  .hero-title {
+    min-height: 60px;
+    font-size: 1.8rem;
+  }
+
   .hero-content {
+    padding: 15px;
+  }
+
+  /* 调整卡片在移动端的布局 */
+  .card {
+    min-width: 140px;
+    min-height: 40px;
+    max-width: 280px;
+    padding: 14px 24px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .card-about {
+    width: 160px;
+    height: 42px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .card-skills {
+    width: 140px;
+    height: 38px;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .card-contact {
+    width: 150px;
+    height: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .card-fun {
+    width: 130px;
+    height: 36px;
+    top: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* 移动端展开纸条全屏显示 */
+  .expanded-paper {
+    top: 5% !important;
+    left: 5% !important;
+    width: 90vw !important;
+    height: 90vh !important;
+  }
+
+  .modal-container {
+    width: 90vw;
+    height: 90vh;
     padding: 20px;
   }
 
-  /* 小屏幕下的纸条和右侧区域响应式调整 */
-  .expanded-paper {
-    top: 10% !important;
-    left: 5% !important;
-    width: 90vw !important;
-    height: 80vh !important;
+  /* 隐藏侧边纸条 */
+  .side-paper {
+    display: none !important;
   }
 
+  /* 调整浮动形状 */
+  .shape-1 {
+    width: 120px;
+    height: 120px;
+    top: 15%;
+    left: 15%;
+  }
+
+  .shape-2 {
+    width: 80px;
+    height: 80px;
+    top: 25%;
+    left: 70%;
+  }
+}
+
+/* 移动端横屏模式 - 等比缩放电脑端布局 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero {
+    padding: 10px 15px;
+    min-height: 100vh;
+  }
+
+  /* 横屏模式下的卡片布局 - 等比缩放 */
+  .card-about {
+    width: 132px;
+    height: 40px;
+    top: 18%;
+    left: 12%;
+    transform: none;
+  }
+
+  .card-skills {
+    width: 120px;
+    height: 38px;
+    top: 32%;
+    left: 12%;
+    transform: none;
+  }
+
+  .card-contact {
+    width: 125px;
+    height: 40px;
+    top: 46%;
+    left: 12%;
+    transform: none;
+  }
+
+  .card-fun {
+    width: 115px;
+    height: 36px;
+    top: 60%;
+    left: 12%;
+    transform: none;
+  }
+
+  /* 横屏模式下的展开纸条 - 保持电脑端比例等比缩放 */
+  .expanded-paper {
+    top: 12% !important;
+    left: 10% !important;
+    width: 50vw !important; 
+    height: 76vh !important; 
+  }
+
+  .modal-container {
+    width: 50vw;
+    height: 76vh;
+    padding: 20px; /* 从40px等比缩放 */
+  }
+
+  /* 移动端横屏模式下的模态框内容等比缩放 */
+  .modal-content {
+    padding: 1.5rem; /* 从2rem等比缩放 */
+    font-size: 0.9em; /* 适当缩小字体 */
+  }
+
+  .modal-content h2 {
+    font-size: 1.8em; /* 从默认大小等比缩放 */
+    margin-bottom: 15px; /* 缩小间距 */
+  }
+
+  .modal-content p, .modal-content ul {
+    font-size: 0.95em; /* 稍微缩小正文字体 */
+    line-height: 1.5; /* 调整行高适应移动端 */
+  }
+
+  .modal-content li {
+    margin: 8px 0; /* 缩小列表项间距 */
+  }
+
+  .modal-sidebar {
+    padding: 1.5rem; /* 从2rem等比缩放 */
+  }
+
+  .modal-sidebar-text {
+    font-size: 1.1em; /* 从1.2em等比缩放 */
+    letter-spacing: 0.08em; /* 适当缩小字间距 */
+  }
+
+  .modal-close {
+    width: 35px; /* 从40px等比缩放 */
+    height: 35px;
+    font-size: 20px; /* 缩小关闭按钮 */
+  }
+
+  /* 横屏模式下的侧边纸条 - 保持电脑端比例等比缩放 */
   .side-paper {
-    top: 10% !important;
-    left: 95% !important; /* 隐藏在右侧 */
-    width: 0 !important;
-    height: 80vh !important;
+    display: block !important;
+    top: 12% !important;
+    left: 25% !important; 
+    width: 60vw !important; 
+    height: 76vh !important;
+    opacity: 1;
   }
 
   .side-paper-content {
-    max-height: calc(80vh - 4rem);
+    max-height: calc(76vh - 3rem);
+    padding: 1.5rem;
+    font-size: 0.9em;
+  }
+
+  .side-paper-content h3 {
+    font-size: 1.2em; /* 从1.4em等比缩放 */
+    margin-bottom: 0.8rem; /* 缩小间距 */
+  }
+
+  /* 调整浮动形状位置 */
+  .shape-1 {
+    width: 100px;
+    height: 100px;
+    top: 20%;
+    left: 5%;
+  }
+
+  .shape-2 {
+    width: 70px;
+    height: 70px;
+    top: 40%;
+    left: 85%;
+  }
+}
+
+/* 小型移动设备 (最大480px) */
+@media (max-width: 480px) {
+  .hero {
+    padding: 15px 8px;
+  }
+
+  .card {
+    min-width: 120px;
+    min-height: 36px;
+    max-width: 240px;
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+
+  .card-about {
+    width: 140px;
+    height: 38px;
+  }
+
+  .card-skills {
+    width: 125px;
+    height: 34px;
+  }
+
+  .card-contact {
+    width: 130px;
+    height: 36px;
+  }
+
+  .card-fun {
+    width: 115px;
+    height: 32px;
+  }
+
+  .expanded-paper {
+    top: 3% !important;
+    left: 3% !important;
+    width: 94vw !important;
+    height: 94vh !important;
+  }
+
+  .modal-container {
+    width: 94vw;
+    height: 94vh;
+    padding: 15px;
+  }
+
+  .shape-1 {
+    width: 80px;
+    height: 80px;
+  }
+
+  .shape-2 {
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -1354,4 +1602,263 @@ body::after {
   color: #a0885c;
   font-size: 1.4em;
   margin-bottom: 1rem;
+}
+
+/* ===== 电脑端响应式设计 ===== */
+
+/* 小桌面 (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero {
+    padding: 30px 15px;
+  }
+
+  /* 调整卡片大小和位置 */
+  .card-about {
+    width: 200px;
+    height: 50px;
+    top: 18%;
+    left: 10%;
+  }
+
+  .card-skills {
+    width: 160px;
+    height: 44px;
+    top: 38%;
+    left: 60%;
+  }
+
+  .card-contact {
+    width: 180px;
+    height: 48px;
+    top: 63%;
+    left: 22%;
+  }
+
+  .card-fun {
+    width: 140px;
+    height: 40px;
+    top: 73%;
+    left: 65%;
+  }
+
+  /* 调整展开纸条 */
+  .expanded-paper {
+    top: 12% !important;
+    left: 12% !important;
+    width: 76vw !important;
+    height: 76vh !important;
+  }
+
+  .modal-container {
+    width: 76vw;
+    height: 76vh;
+    padding: 30px;
+  }
+
+  /* 调整侧边纸条 */
+  .side-paper {
+    top: 12%;
+    left: 32%;
+    width: 56vw;
+    height: 76vh;
+  }
+
+  .side-paper-content {
+    max-height: calc(76vh - 4rem);
+  }
+}
+
+/* 中等桌面 (1024px - 1440px) */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .hero {
+    padding: 35px 18px;
+  }
+
+  /* 卡片保持原大小，微调位置 */
+  .card-about {
+    top: 16%;
+    left: 9%;
+  }
+
+  .card-skills {
+    top: 36%;
+    left: 64%;
+  }
+
+  .card-contact {
+    top: 61%;
+    left: 21%;
+  }
+
+  .card-fun {
+    top: 71%;
+    left: 69%;
+  }
+
+  /* 展开纸条微调 */
+  .expanded-paper {
+    top: 14% !important;
+    left: 14% !important;
+    width: 72vw !important;
+    height: 72vh !important;
+  }
+
+  .modal-container {
+    width: 72vw;
+    height: 72vh;
+    padding: 35px;
+  }
+
+  /* 侧边纸条调整 */
+  .side-paper {
+    top: 14%;
+    left: 34%;
+    width: 52vw;
+    height: 72vh;
+  }
+
+  .side-paper-content {
+    max-height: calc(72vh - 4rem);
+  }
+}
+
+/* 大桌面 (1440px+) */
+@media (min-width: 1440px) {
+  .hero {
+    padding: 45px 25px;
+  }
+
+  /* 增大卡片尺寸以适应大屏幕 */
+  .card-about {
+    width: 240px;
+    height: 60px;
+    top: 14%;
+    left: 7%;
+  }
+
+  .card-skills {
+    width: 200px;
+    height: 52px;
+    top: 34%;
+    left: 66%;
+  }
+
+  .card-contact {
+    width: 220px;
+    height: 56px;
+    top: 59%;
+    left: 19%;
+  }
+
+  .card-fun {
+    width: 180px;
+    height: 48px;
+    top: 69%;
+    left: 71%;
+  }
+
+  /* 调整卡片基础样式 */
+  .card {
+    min-width: 180px;
+    min-height: 52px;
+    max-width: 360px;
+    padding: 20px 36px;
+    font-size: 18px;
+  }
+
+  /* 展开纸条在大屏幕上稍微缩小比例 */
+  .expanded-paper {
+    top: 16% !important;
+    left: 16% !important;
+    width: 68vw !important;
+    height: 68vh !important;
+  }
+
+  .modal-container {
+    width: 68vw;
+    height: 68vh;
+    padding: 45px;
+  }
+
+  /* 侧边纸条调整 */
+  .side-paper {
+    top: 16%;
+    left: 36%;
+    width: 48vw;
+    height: 68vh;
+  }
+
+  .side-paper-content {
+    max-height: calc(68vh - 4rem);
+    font-size: 1.1em;
+  }
+
+  .side-paper-content h3 {
+    font-size: 1.6em;
+  }
+
+  /* 调整浮动形状大小 */
+  .shape-1 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .shape-2 {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+/* ===== 移动端横屏模式 - Slides和Picture等比缩放 ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Slides展开纸条等比缩放 */
+  .slides-expanded-paper {
+    left: 40%;
+    width: 77vw; /* 从110vw等比缩放约70% */
+    height: 70vh; /* 从60vh调整适应横屏 */
+    padding: 0.8rem 1.2rem; /* 从1rem 1.5rem等比缩放 */
+  }
+
+  /* Slides标题文字等比缩放 */
+  .slides-typing-text {
+    top: -10%;
+    font-size: clamp(28px, 5.5vw, 72px); /* 从clamp(36px, 7.5vw, 96px)等比缩放约75% */
+    margin-bottom: 0.8rem; /* 从1rem等比缩放 */
+  }
+
+  /* Slides图片容器等比缩放 */
+  .slides-images {
+    height: calc(100% - 50px); /* 从70px等比缩放 */
+  }
+
+  /* 单个slide图片等比缩放 */
+  .slide-image {
+    width: 364px; /* 从520px等比缩放约70% */
+    height: 252px; /* 从360px等比缩放约70% */
+    box-shadow: 0 14px 36px rgba(0,0,0,0.18); /* 从0 18px 48px等比缩放 */
+  }
+
+  .slide-image::after {
+    width: 96%; /* 保持比例 */
+    height: 92%;
+    filter: blur(9px); /* 从blur(12px)等比缩放 */
+  }
+
+  /* 竖向轮播图片等比缩放 */
+  .vertical-carousel .vc-item img {
+    filter: contrast(1.04) saturate(1.06); /* 稍微降低滤镜强度适应移动端 */
+  }
+
+  /* 中央竖向毛玻璃条等比缩放 */
+  .vertical-frost {
+    width: 50%; /* 从45%稍微缩小适应移动端 */
+    height: 180%; /* 从200%等比缩放 */
+  }
+
+  /* 小箭头提示等比缩放 */
+  .vertical-carousel::before,
+  .vertical-carousel::after {
+    width: 28px; /* 从36px等比缩放 */
+    height: 28px;
+  }
 }
