@@ -1,0 +1,106 @@
+.tape {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 32px;
+  z-index: 100;
+  overflow: hidden;
+  background: var(--warning);
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  box-shadow: 0 4px 0 rgba(26, 26, 26, 0.08);
+}
+
+.tape--top {
+  top: 0;
+  transform: rotate(-0.4deg);
+}
+
+.tape--bottom {
+  bottom: 0;
+  transform: rotate(0.4deg);
+}
+
+.tape__strip {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--warning) 0 22px,
+    var(--ink) 22px 44px
+  );
+  align-items: center;
+  animation: tape-slide 28s linear infinite;
+}
+
+.tape__track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.tape__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 22px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* 用 stroke 让文字穿透斜纹背景 */
+  -webkit-text-stroke: 0;
+  text-shadow:
+    1px 0 0 var(--paper),
+    -1px 0 0 var(--paper),
+    0 1px 0 var(--paper),
+    0 -1px 0 var(--paper);
+}
+
+.tape__diamond {
+  font-size: 8px;
+  color: var(--ink);
+  text-shadow: none;
+  background: var(--paper);
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  font-size: 9px;
+}
+
+.tape__word {
+  color: var(--ink);
+}
+
+@keyframes tape-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .tape {
+    height: 26px;
+  }
+  .tape__item {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    padding: 0 16px;
+    gap: 10px;
+  }
+  .tape__diamond {
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+  }
+}

@@ -1,50 +1,75 @@
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 :root {
-  /* 白天模式 - 森系风格 */
-  --bg-primary: #f8f5f0; /* 柔和的米白色 */
-  --color-primary: #95b564; /* 富有生机的黄绿色 */
-  --color-accent: #56653c; /* 沉稳的橄榄绿色 */
-  --text-primary: #121106; /* 接近黑色的深墨绿 */
-  --text-secondary: #afb794; /* 灰调豆沙绿 */
-  
-  /* 玻璃态效果 */
-  --glass-bg-light: rgba(203, 213, 186, 0.1); /* 浅灰绿色 */
-  --glass-bg-dark: rgba(175, 183, 148, 0.1); /* 灰调豆沙绿 */
-  --glass-border: rgba(203, 213, 186, 0.2);
-  
-  /* 过渡动画 */
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* 色彩 */
+  --bg: #f4efe6;
+  --ink: #1a1a1a;
+  --ink-soft: #6b6557;
+  --warning: #f5c518;
+  --persimmon: #d65a3c;
+  --persimmon-deep: #b04a31;
+  --moss: #6b7a4a;
+  --paper: #f7f0dd;
+  --paper-deep: #ebdebe;
+  --line: #1a1a1a;
+
+  /* 字体 */
+  --font-display: 'Fraunces', 'Noto Serif SC', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-hand: 'Caveat', 'Brush Script MT', cursive;
+  --font-cn: 'Noto Serif SC', 'Fraunces', serif;
+
+  /* 尺寸 */
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+
+  /* 阴影 */
+  --shadow-soft: 0 2px 8px rgba(26, 26, 26, 0.06);
+  --shadow-paper: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-paper-hover: 0 14px 36px rgba(0, 0, 0, 0.12);
+  --shadow-hard: 4px 4px 0 var(--ink);
+
+  /* 过渡 */
+  --t-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --t-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slow: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-[data-theme="dark"] {
-  /* 夜晚模式 - 深色森系 */
-  --bg-primary: #1a1f0f; /* 深墨绿背景 */
-  --color-primary: #95b564; /* 保持黄绿色 */
-  --color-accent: #cbd5ba; /* 浅灰绿色作为强调 */
-  --text-primary: #f8f5f0; /* 米白色文字 */
-  --text-secondary: #cbd5ba; /* 浅灰绿色 */
-  
-  --glass-bg-light: rgba(26, 31, 15, 0.3);
-  --glass-bg-dark: rgba(0, 0, 0, 0.2);
-  --glass-border: rgba(203, 213, 186, 0.1);
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-primary); /* 主要背景色 */
-  color: var(--text-primary);
-  transition: var(--transition);
-  overflow-x: auto;
-  overflow-y: auto;
+  position: relative;
+  min-height: 100vh;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'ss01' 1;
+}
+
+/* Risograph 颗粒噪点纹理：SVG inline，无需额外请求 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 220px 220px;
+  opacity: 0.08;
+  mix-blend-mode: multiply;
 }
 
 #root {
@@ -52,21 +77,42 @@ body {
   position: relative;
 }
 
-/* 滚动条样式 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px; /* 为横向滚动条设置高度 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 4px;
+ul,
+ol {
+  list-style: none;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--warning);
+  color: var(--ink);
+}
+
+/* 减弱动画偏好：尊重系统设置 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

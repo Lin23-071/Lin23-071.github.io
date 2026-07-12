@@ -1,0 +1,408 @@
+.works {
+  position: relative;
+  padding: 100px 8vw 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: invite-rise 0.8s ease-out 1.7s both;
+}
+
+.works__head {
+  margin-bottom: 56px;
+  max-width: 720px;
+}
+
+.works__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  margin-bottom: 16px;
+}
+
+.works__title {
+  font-family: var(--font-cn);
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.1;
+  color: var(--ink);
+  margin-bottom: 20px;
+  font-variation-settings: 'opsz' 96;
+}
+
+.works__desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 480px;
+}
+
+.works__quote {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--ink);
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  position: relative;
+  padding-left: 14px;
+  border-left: 2px solid var(--persimmon);
+}
+
+.works__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+/* ============================================== */
+/*  通用 work-card 壳（项目卡与 findme 卡共用）     */
+/* ============================================== */
+.work-card {
+  position: relative;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  box-shadow: var(--shadow-hard);
+  transition: transform var(--t-base), box-shadow var(--t-base);
+  overflow: hidden;
+}
+
+.work-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--warning);
+  transition: background var(--t-base);
+}
+
+.work-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--persimmon);
+}
+
+.work-card:hover::before {
+  background: var(--persimmon);
+}
+
+.work-card__link {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 28px 22px;
+  color: var(--ink);
+  text-decoration: none;
+  height: 100%;
+  min-height: 100%;
+}
+
+.work-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.work-card__id {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.work-card__type {
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  color: var(--ink);
+  background: var(--bg);
+  transition: background var(--t-base), color var(--t-base), border-color var(--t-base);
+}
+
+.work-card__title {
+  font-family: var(--font-cn);
+  font-weight: 900;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-variation-settings: 'opsz' 96;
+}
+
+.work-card__sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.work-card__desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.work-card__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.work-card__tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.work-card__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  background: var(--bg);
+  border: 1px solid rgba(26, 26, 26, 0.25);
+  border-radius: 2px;
+  color: var(--ink);
+  text-transform: lowercase;
+}
+
+.work-card__cta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.work-card__arrow {
+  display: inline-block;
+  transition: transform var(--t-base);
+  font-size: 14px;
+}
+
+.work-card:hover .work-card__arrow {
+  transform: translate(4px, -4px);
+}
+
+/* ============================================== */
+/*  featured 大卡：横跨两列，柿红顶条              */
+/* ============================================== */
+.work-card--featured {
+  grid-column: span 2;
+  background: var(--warning);
+}
+
+.work-card--featured::before {
+  background: var(--persimmon);
+  height: 8px;
+}
+
+.work-card--featured:hover {
+  background: var(--persimmon);
+}
+
+.work-card--featured:hover::before {
+  background: var(--ink);
+}
+
+.work-card--featured .work-card__title {
+  font-size: clamp(30px, 4.2vw, 52px);
+}
+
+.work-card--featured .work-card__type {
+  background: var(--bg);
+  border-color: var(--ink);
+}
+
+.work-card--featured .work-card__tag {
+  background: var(--bg);
+  border-color: var(--ink);
+}
+
+/* ============================================== */
+/*  Find Me 卡：与项目卡同尺寸（1 列宽）          */
+/*  深色背景，内部 3 个堆叠小卡，点哪条复制哪条     */
+/* ============================================== */
+.work-card--contact {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--persimmon);
+}
+
+.work-card--contact::before {
+  background: var(--persimmon);
+  height: 8px;
+}
+
+.work-card--contact:hover {
+  box-shadow: 6px 6px 0 var(--warning);
+}
+
+.work-card--contact:hover::before {
+  background: var(--warning);
+}
+
+.work-card__link--contact {
+  /* div 容器，不是 button */
+  cursor: default;
+}
+
+.work-card--contact .work-card__id {
+  color: var(--bg);
+}
+
+.work-card--contact .work-card__type {
+  color: var(--bg);
+  border-color: rgba(244, 239, 230, 0.4);
+  background: transparent;
+}
+
+.work-card--contact .work-card__sub--contact {
+  color: var(--bg);
+  opacity: 0.7;
+  margin-bottom: 14px;
+}
+
+/* ----- 3 个堆叠小卡（单列纵向，紧凑布局） ----- */
+.findme-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.findme-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1.5px solid rgba(244, 239, 230, 0.22);
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: var(--bg);
+  transition:
+    background var(--t-base),
+    border-color var(--t-base),
+    transform var(--t-base);
+}
+
+.findme-cell:hover {
+  background: rgba(244, 239, 230, 0.06);
+  border-color: rgba(244, 239, 230, 0.5);
+  transform: translateX(2px);
+}
+
+.findme-cell:focus {
+  outline: none;
+}
+
+.findme-cell:focus-visible {
+  outline: 2px solid var(--persimmon);
+  outline-offset: 3px;
+}
+
+.findme-cell.is-copied {
+  background: var(--persimmon);
+  border-color: var(--persimmon);
+  color: var(--bg);
+}
+
+.findme-cell__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  opacity: 0.6;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  min-width: 56px;
+}
+
+.findme-cell__value {
+  font-family: var(--font-mono);
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  word-break: break-all;
+  line-height: 1.3;
+  flex: 1;
+  min-width: 0;
+}
+
+.findme-cell__arrow {
+  font-size: 14px;
+  opacity: 0.5;
+  transition: transform var(--t-base), opacity var(--t-base);
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.findme-cell:hover .findme-cell__arrow {
+  transform: translateX(3px);
+  opacity: 1;
+}
+
+.findme-cell.is-copied .findme-cell__arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================== */
+/*  响应式                                         */
+/* ============================================== */
+@media (max-width: 900px) {
+  .works__grid {
+    grid-template-columns: 1fr;
+  }
+  .work-card--featured {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .works {
+    padding: 60px 24px 40px;
+  }
+  .works__head {
+    margin-bottom: 36px;
+  }
+  .work-card__link {
+    padding: 24px 22px 20px;
+  }
+  .work-card--featured .work-card__title {
+    font-size: 28px;
+  }
+  .findme-cell {
+    padding: 10px 12px;
+  }
+  .findme-cell__label {
+    min-width: 48px;
+    font-size: 9px;
+  }
+}

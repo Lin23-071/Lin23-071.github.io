@@ -1,0 +1,67 @@
+.egg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+}
+
+.egg__toast {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translate(-50%, -20px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: var(--font-cn);
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 12px 36px rgba(26, 26, 26, 0.3);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.egg__toast-emoji {
+  font-size: 20px;
+}
+
+.egg.is-active .egg__toast {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.egg__rain {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.egg__dino {
+  position: absolute;
+  top: -40px;
+  display: block;
+  animation-name: dino-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes dino-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}

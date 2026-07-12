@@ -2,47 +2,23 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="071のSPACE - 一个现代化的个人主页，展示创意与技术的结合。" />
-    <meta name="keywords" content="个人主页, 罗小黑, 玻璃态, 动画, 技术展示" />
-    <meta name="author" content="071" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <title>071のSPACE</title>
-    <style>
-      /* 轻量加载占位，避免抢占布局高度 */
-      .loading {
-        font-size: 1.5rem;
-        color: #2a9d8f;
-        animation: fadeIn 1.5s infinite;
-        text-align: center;
-        padding: 40px;
-      }
-
-      @keyframes fadeIn {
-        0%, 100% {
-          opacity: 0;
-        }
-        50% {
-          opacity: 1;
-        }
-      }
-    </style>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="description" content="071 · 正在装修中。Building something nice — a personal homepage under construction." />
+    <meta name="theme-color" content="#F4EFE6" />
+    <meta property="og:title" content="071 · 正在装修中" />
+    <meta property="og:description" content="Building something nice." />
+    <meta property="og:type" content="website" />
+    <title>071 · 正在装修中</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500;700&family=Noto+Serif+SC:wght@400;600;900&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="root">
-      <div class="loading">加载中...</div>
-    </div>
-    <!-- 纸张褶皱SVG滤镜定义，全局可用 -->
-    <svg width="0" height="0" style="position:absolute">
-      <filter id="paperWrinkle">
-        <feTurbulence type="fractalNoise" baseFrequency="0.06 0.15" numOctaves="3" seed="7" result="turb"/>
-        <feDisplacementMap in2="turb" in="SourceGraphic" scale="4" xChannelSelector="R" yChannelSelector="G"/>
-        <feGaussianBlur stdDeviation="0.3"/>
-        <feComponentTransfer>
-          <feFuncA type="linear" slope="0.98"/>
-        </feComponentTransfer>
-      </filter>
-    </svg>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
