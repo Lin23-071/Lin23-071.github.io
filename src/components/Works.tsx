@@ -35,7 +35,7 @@ const WORKS: Work[] = [
     description:
       '坐姿监测 IoT 项目的前端 demo。没硬件时主要展示前端，手机比例更佳。',
     tags: ['webapp', 'iot', 'mobile'],
-    href: 'https://vercel.com/07123lin-6334s-projects/project-objyw',
+    href: 'https://project-objyw.vercel.app/',
   },
   {
     id: '03',
