@@ -1,201 +1,327 @@
-import { useState, useEffect, useRef } from 'react'
-import './Works.css'
+import { useEffect, useRef, useState } from 'react'
+import { CATEGORY_LABEL, CATEGORY_ORDER, WORKS } from '../data/works'
+import { collect } from '../state/collect'
+import { useDecode } from '../hooks/useDecode'
+import WorkDetail from './WorkDetail'
 
-interface Work {
-  id: string
-  title: string
-  subtitle: string
-  description: string
-  tags: string[]
-  href: string
-  featured?: boolean
+interface Preview {
+  images: string[]
+  page: number
 }
 
-interface Contact {
-  label: string
-  value: string
-  hint: string
+type WorkItem = (typeof WORKS)[number]
+type Entry = { w: WorkItem; i: number }
+
+/** 精选按指定顺序整行展开；其余按形态归进索引 */
+const FEATURED: Entry[] = WORKS.map((w, i) => ({ w, i }))
+  .filter((e) => e.w.featured)
+  .sort((a, b) => (a.w.order ?? 99) - (b.w.order ?? 99))
+
+const REST: Entry[] = WORKS.map((w, i) => ({ w, i }))
+  .filter((e) => !e.w.featured)
+  .sort((a, b) => CATEGORY_ORDER.indexOf(a.w.category) - CATEGORY_ORDER.indexOf(b.w.category))
+
+/** 页面上的展示序列：详情页编号与左右翻页都按它走，保证 01–10 连续 */
+const DISPLAY: Entry[] = [...FEATURED, ...REST]
+
+/** 索引网格凑满 3 列，空位做成通往档案页的出口卡 */
+const FILLER_COUNT = (3 - (REST.length % 3)) % 3
+
+/** 索引小卡的内容：精选行与索引卡共用一套事实 */
+function WorkCardBody({ w }: { w: WorkItem }) {
+  return (
+    <>
+      <span className="work-card__top">
+        <span className={`work-card__cat work-card__cat--${w.category}`}>
+          {CATEGORY_LABEL[w.category]}
+        </span>
+        <span className="work-card__year">{w.subtitle.split(' · ')[0]}</span>
+      </span>
+      <strong className="work-card__title">{w.title}</strong>
+      <span className="work-card__desc">{w.summary?.[0] ?? w.description}</span>
+      {w.aiTag && <span className="work-card__ai">{w.aiTag}</span>}
+      <span className="work-card__foot">
+        {w.draft ? '整理中 / COMING SOON' : 'DETAILS →'}
+      </span>
+    </>
+  )
 }
 
-const WORKS: Work[] = [
-  {
-    id: '01',
-    title: '番客：银信之海',
-    subtitle: '腾讯云黑客松 · 叙事卡牌 · 华南#3',
-    description:
-      '以闽南潮汕侨批文化为背景的叙事卡牌游戏。线下路演腾讯云黑客松华南赛区第3名。',
-    tags: ['hackathon', 'game', 'top3'],
-    href: 'http://e429b064a45ba02257346c9c458727e3.tch.qcdntest.cn',
-    featured: true,
-  },
-  {
-    id: '02',
-    title: '智能坐垫 WebApp',
-    subtitle: 'WebApp · 前端 + IoT 概念',
-    description:
-      '坐姿监测 IoT 项目的前端 demo。没硬件时主要展示前端，手机比例更佳。',
-    tags: ['webapp', 'iot', 'mobile'],
-    href: 'https://project-objyw.vercel.app/',
-  },
-  {
-    id: '03',
-    title: 'PawPrint-爪印',
-    subtitle: '30h hackathon · AI 知识管理',
-    description:
-      '针对"视频收藏吃灰"与宠物类信息的 AI 知识管理工具。30 小时极限可路演 demo 落地。',
-    tags: ['hackathon', 'AI', '30h', 'demo'],
-    href: 'https://traepet22j4.vercel.app/',
-  },
-  {
-    id: '04',
-    title: 'GitHub',
-    subtitle: '@Lin23-071',
-    description: '代码、想法、偶尔的小项目。',
-    tags: ['profile'],
-    href: 'https://github.com/Lin23-071',
-  },
-]
-
-const CONTACTS: Contact[] = [
-  { label: 'TELE', value: '13376987385', hint: '电话' },
-  { label: 'QQ', value: '2236659454', hint: 'QQ' },
-  { label: 'WECHAT', value: 'L13376987385', hint: '微信' },
-]
-
+/** 作品区（白 · 静区）：整行精选 → 分类索引 → 共用同一个二级详情页 */
 export default function Works() {
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
-  const copiedTimerRef = useRef<number | null>(null)
+  const tagRef = useDecode<HTMLSpanElement>('02 / Works')
+  const restoreRef = useRef<HTMLElement | null>(null)
+  const [detailIndex, setDetailIndex] = useState<number | null>(null)
+  const [preview, setPreview] = useState<Preview | null>(null)
+
+  const detail = detailIndex === null ? null : WORKS[detailIndex]
+  const detailPos = detailIndex === null
+    ? 0
+    : Math.max(0, DISPLAY.findIndex((e) => e.i === detailIndex))
+  const shots = preview?.images ?? []
+
+  const openDetail = (i: number) => {
+    restoreRef.current = document.activeElement as HTMLElement | null
+    collect('detail') // 第一次打开二级页 = 一枚星星
+    setPreview(null)
+    setDetailIndex(i)
+  }
+  const closeDetail = () => {
+    setPreview(null)
+    setDetailIndex(null)
+    requestAnimationFrame(() => restoreRef.current?.focus())
+  }
+  const turnWork = (dir: 1 | -1) => {
+    setPreview(null)
+    setDetailIndex((cur) => {
+      if (cur === null) return cur
+      const pos = DISPLAY.findIndex((e) => e.i === cur)
+      return DISPLAY[(pos + dir + DISPLAY.length) % DISPLAY.length].i
+    })
+  }
+  const turnShot = (dir: 1 | -1) => {
+    setPreview((p) => (p ? { ...p, page: (p.page + dir + p.images.length) % p.images.length } : p))
+  }
+
+  // 打开二级页时锁滚动；Esc 先关大图、再关详情
+  useEffect(() => {
+    document.documentElement.classList.toggle('detail-open', detail !== null)
+    return () => document.documentElement.classList.remove('detail-open')
+  }, [detail])
 
   useEffect(() => {
-    return () => {
-      if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current)
+    if (detail === null && preview === null) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (preview) setPreview(null)
+        else closeDetail()
+      } else if (e.key === 'ArrowRight') {
+        if (preview) turnShot(1)
+        else turnWork(1)
+      } else if (e.key === 'ArrowLeft') {
+        if (preview) turnShot(-1)
+        else turnWork(-1)
+      }
     }
-  }, [])
-
-  const fallbackCopy = (text: string) => {
-    const ta = document.createElement('textarea')
-    ta.value = text
-    ta.style.position = 'fixed'
-    ta.style.opacity = '0'
-    document.body.appendChild(ta)
-    ta.select()
-    try {
-      document.execCommand('copy')
-    } catch {
-      // ignore
-    }
-    document.body.removeChild(ta)
-  }
-
-  const copyText = (text: string, onSuccess: () => void) => {
-    if (navigator.clipboard?.writeText) {
-      navigator.clipboard.writeText(text).then(onSuccess, () => {
-        fallbackCopy(text)
-        onSuccess()
-      })
-    } else {
-      fallbackCopy(text)
-      onSuccess()
-    }
-  }
-
-  // 点击某个联系方式：复制该条 → 高亮 1.2s（每条独立）
-  const handleContactClick = (idx: number, value: string) => {
-    const flash = () => {
-      setCopiedIdx(idx)
-      if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current)
-      copiedTimerRef.current = window.setTimeout(() => setCopiedIdx(null), 1200)
-    }
-    copyText(value, flash)
-  }
-
-  const renderWorkCard = (w: Work) => (
-    <li
-      key={w.id}
-      className={`work-card ${w.featured ? 'work-card--featured' : ''}`}
-    >
-      <a
-        className="work-card__link"
-        href={w.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${w.title} — ${w.subtitle}（新窗口打开）`}
-      >
-        <div className="work-card__top">
-          <span className="work-card__id">#{w.id}</span>
-          <span className="work-card__type">
-            {w.featured ? '★ featured' : w.tags[0]}
-          </span>
-        </div>
-        <h3 className="work-card__title">{w.title}</h3>
-        <p className="work-card__sub">{w.subtitle}</p>
-        <p className="work-card__desc">{w.description}</p>
-        <div className="work-card__bottom">
-          <ul className="work-card__tags">
-            {w.tags.map((t) => (
-              <li key={t} className="work-card__tag">{t}</li>
-            ))}
-          </ul>
-          <span className="work-card__cta">
-            VIEW
-            <span className="work-card__arrow" aria-hidden="true">↗</span>
-          </span>
-        </div>
-      </a>
-    </li>
-  )
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [detail, preview]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <section className="works" id="works">
-      <div className="works__inner">
-        <div className="works__head">
-          <span className="works__tag">#03 · WORKS</span>
-          <h2 className="works__title">做过的，和正在做的东西。</h2>
-          <p className="works__desc">
-            正式版 coming soon。
-            <br />
-            <em className="works__quote">Not all those who wander are lost.</em>
-          </p>
+    <section className="section" id="works" data-theme="paper">
+      <div className="section__inner">
+        <div className="section__head">
+          <span className="section__tag rv--s" ref={tagRef}>02 / Works</span>
+          <div>
+            <h2 className="section__title rv--s" style={{ '--d': '.05s' } as React.CSSProperties}>
+              一些工作记录
+            </h2>
+            <p className="section__sub rv--s" style={{ '--d': '.1s' } as React.CSSProperties}>
+              持续更新中，最近更新2026.11，腾讯云黑客松全球总决赛产出暂未复盘收录
+            </p>
+          </div>
         </div>
 
-        <ul className="works__grid">
-          {/* 前 3 张：番客（featured）/ 智能坐垫 / PawPrint */}
-          {WORKS.slice(0, 3).map(renderWorkCard)}
+        <hr className="section__rule rv-line--s" />
 
-          {/* 第 4 张：GitHub */}
-          {WORKS.slice(3).map(renderWorkCard)}
+        <ul className="works__list">
+          {FEATURED.map(({ w, i }, n) => (
+            <li
+              key={w.id}
+              className={`work-row rv--s ${w.draft ? 'is-draft' : ''}`}
+              style={{ '--d': `${n * 0.06}s` } as React.CSSProperties}
+            >
+              <span className="work-row__no">{String(n + 1).padStart(2, '0')}</span>
 
-          {/* 第 5 张：Find Me —— 与项目卡同尺寸（1 列宽），深色卡，3 个堆叠小卡 */}
-          <li className="work-card work-card--contact">
-            <div className="work-card__link work-card__link--contact">
-              <div className="work-card__top">
-                <span className="work-card__id">#05</span>
-                <span className="work-card__type">↻ find me</span>
-              </div>
-              <p className="work-card__sub work-card__sub--contact">
-                点哪条复制哪条
-              </p>
-              <div className="findme-list">
-                {CONTACTS.map((c, i) => (
-                  <button
-                    key={c.label}
-                    type="button"
-                    className={`findme-cell ${copiedIdx === i ? 'is-copied' : ''}`}
-                    onClick={() => handleContactClick(i, c.value)}
-                    aria-label={`复制 ${c.label} ${c.value}`}
+              <button
+                type="button"
+                className="work-row__thumb"
+                onClick={() => openDetail(i)}
+                disabled={!w.image && !w.cover}
+                aria-label={`展开 ${w.title} 的详情`}
+              >
+                {w.image ? (
+                  <>
+                    <img className="work-row__thumb-bg" src={w.image} alt="" aria-hidden="true" />
+                    <img
+                      className="work-row__thumb-img"
+                      src={w.image}
+                      alt={w.imageAlt ?? w.title}
+                      loading="lazy"
+                    />
+                  </>
+                ) : w.cover ? (
+                  <span className="work-row__cover" aria-hidden="true">
+                    <span className="work-row__cover-kicker">{w.cover.kicker}</span>
+                    <b className="work-row__cover-big">{w.cover.big}</b>
+                    <span className="work-row__cover-foot">{w.cover.foot}</span>
+                  </span>
+                ) : (
+                  <span className="work-row__thumb-empty">NO<br />PREVIEW</span>
+                )}
+              </button>
+
+              <span className="work-row__main">
+                <span
+                  className="work-row__title work-row__title--btn"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openDetail(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      openDetail(i)
+                    }
+                  }}
+                  aria-label={`展开 ${w.title} 的详情`}
+                >
+                  {w.title}
+                </span>
+                <span className="work-row__sub">{w.subtitle}</span>
+                {w.highlight && <span className="work-row__highlight">✦ {w.highlight}</span>}
+              </span>
+
+              <span className="work-row__aside">
+                <span className="work-row__desc">
+                  {(w.summary ?? [w.description]).map((line, k) => (
+                    <span key={k} className="work-row__desc-line">{line}</span>
+                  ))}
+                </span>
+                <ul className="work-row__tags">
+                  {w.aiTag && <li className="work-row__tags-ai">{w.aiTag}</li>}
+                  {w.tags.map((t) => <li key={t}>{t}</li>)}
+                </ul>
+              </span>
+
+              <span className="work-row__action">
+                <button type="button" className="work-row__detail" onClick={() => openDetail(i)}>
+                  DETAILS <span aria-hidden="true">→</span>
+                </button>
+                {w.href ? (
+                  <a
+                    className="work-row__cta"
+                    href={w.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${w.title}（新窗口打开）`}
                   >
-                    <span className="findme-cell__label">{c.label}</span>
-                    <span className="findme-cell__value">{c.value}</span>
-                    <span className="findme-cell__arrow" aria-hidden="true">
-                      {copiedIdx === i ? '✓' : '→'}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </li>
+                    VIEW <span className="arrow" aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <span className="work-row__cta is-muted">
+                    {w.draft ? '整理中' : '无外链'}
+                  </span>
+                )}
+              </span>
+            </li>
+          ))}
         </ul>
+
+        <div className="works__index">
+          <div className="works__index-head rv--s" style={{ '--d': '.18s' } as React.CSSProperties}>
+            <h3>INDEX / 其余 {REST.length} 件</h3>
+            <ul className="works__legend">
+              {CATEGORY_ORDER.map((c) => (
+                <li key={c}>
+                  <i data-cat={c} aria-hidden="true" />
+                  {CATEGORY_LABEL[c]}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <ul className="works__cards rv-frame">
+            {REST.map(({ w, i }, k) => (
+              <li
+                key={w.id}
+                className={`work-card rv--s ${w.draft ? 'is-draft' : ''}`}
+                style={{ '--d': `${0.22 + k * 0.05}s` } as React.CSSProperties}
+              >
+                {w.draft ? (
+                  <div className="work-card__inner">
+                    <WorkCardBody w={w} />
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="work-card__inner"
+                    onClick={() => openDetail(i)}
+                    aria-label={`展开 ${w.title} 的详情`}
+                  >
+                    <WorkCardBody w={w} />
+                  </button>
+                )}
+              </li>
+            ))}
+
+            {Array.from({ length: FILLER_COUNT }, (_, k) => (
+              <li
+                key={`filler-${k}`}
+                className="work-card work-card--filler rv--s"
+                style={{ '--d': `${0.22 + (REST.length + k) * 0.05}s` } as React.CSSProperties}
+              >
+                <a className="work-card__inner" href="/cv.html">
+                  <span className="work-card__top">
+                    <span className="work-card__cat">ARCHIVE / 档案</span>
+                  </span>
+                  <strong className="work-card__title">更多详见CV</strong>
+                  <span className="work-card__foot">/cv.html ↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <p className="works__index-foot rv--s" style={{ '--d': '.5s' } as React.CSSProperties}>
+            按做出来的形态归类，不按技术栈；完整履历在档案页
+          </p>
+        </div>
       </div>
+
+      {detail && (
+        <WorkDetail
+          work={detail}
+          index={detailPos}
+          total={DISPLAY.length}
+          onClose={closeDetail}
+          onPrev={() => turnWork(-1)}
+          onNext={() => turnWork(1)}
+          onZoom={(images, page) => {
+            collect('gallery') // 第一次放大截图 = 一枚星星
+            setPreview({ images, page })
+          }}
+        />
+      )}
+
+      {preview && (
+        <div className="lightbox" onClick={() => setPreview(null)} role="presentation">
+          <div className="lightbox__panel" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="lightbox__close"
+              onClick={() => setPreview(null)}
+              aria-label="关闭截图"
+            >
+              ✕
+            </button>
+            <img src={shots[preview.page]} alt={`${detail?.title ?? '作品'} 截图 ${preview.page + 1}`} />
+
+            {shots.length > 1 && (
+              <div className="lightbox__nav">
+                <button type="button" onClick={() => turnShot(-1)} aria-label="上一张">←</button>
+                <span>
+                  {String(preview.page + 1).padStart(2, '0')} / {String(shots.length).padStart(2, '0')}
+                </span>
+                <button type="button" onClick={() => turnShot(1)} aria-label="下一张">→</button>
+              </div>
+            )}
+
+            <div className="lightbox__cap">
+              <strong>{detail?.title}</strong>
+              <span>{detail?.subtitle}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

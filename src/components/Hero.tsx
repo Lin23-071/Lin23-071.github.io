@@ -1,151 +1,114 @@
-import { useState, useEffect } from 'react'
-import { useTypewriter } from '../hooks/useTypewriter'
-import StickyNote from './StickyNote'
-import './Hero.css'
+import { useEffect, useState } from 'react'
+import ChinaMap from './ChinaMap'
 
-interface HeroProps {
-  onEgg?: () => void
+const WORDMARK = 'Lin 071'
+
+/** hero 关键数字：在粒子收敛后段从 0 滚上来，机制对齐 CliVigil 的 countup */
+const STATS = [
+  { to: 10, suffix: '', label: 'Projects' },
+  { to: 6, suffix: '', label: 'Awards' },
+  { to: 1, suffix: '%', label: 'Outstanding Winner' },
+]
+
+function useCountup(startAtMs: number) {
+  const [vals, setVals] = useState(() => STATS.map(() => '0'))
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setVals(STATS.map((s) => `${s.to}${s.suffix}`))
+      return
+    }
+    let raf = 0
+    let origin: number | null = null
+    const DUR = 1100
+    const STAGGER = 110
+    const timer = window.setTimeout(() => {
+      const step = (now: number) => {
+        if (origin === null) origin = now
+        const e = now - origin
+        setVals(
+          STATS.map((s, i) => {
+            const p = Math.min(1, Math.max(0, (e - i * STAGGER) / DUR))
+            const eased = 1 - Math.pow(1 - p, 5)
+            return `${Math.round(s.to * eased)}${s.suffix}`
+          }),
+        )
+        if (e < DUR + STAGGER * (STATS.length - 1)) raf = requestAnimationFrame(step)
+      }
+      raf = requestAnimationFrame(step)
+    }, startAtMs)
+    return () => {
+      window.clearTimeout(timer)
+      cancelAnimationFrame(raf)
+    }
+  }, [startAtMs])
+  return vals
 }
 
-export default function Hero({ onEgg }: HeroProps) {
-  const [titleDone, setTitleDone] = useState(false)
-  const titleText = useTypewriter('正在装修中。', 90)
-  const [subTyped, setSubTyped] = useState('')
-  const subText = 'Building something nice…'
-
-  // 副标题打字
-  useEffect(() => {
-    if (!titleDone) return
-    let i = 0
-    const id = window.setInterval(() => {
-      i++
-      setSubTyped(subText.slice(0, i))
-      if (i >= subText.length) window.clearInterval(id)
-    }, 50)
-    return () => window.clearInterval(id)
-  }, [titleDone, subText])
-
-  // 标题完成后切状态
-  useEffect(() => {
-    if (titleText.length >= 6) {
-      const t = setTimeout(() => setTitleDone(true), 200)
-      return () => clearTimeout(t)
-    }
-  }, [titleText])
-
-  // 标题点击 3 次触发彩蛋
-  const [titleClicks, setTitleClicks] = useState(0)
-  const handleTitleClick = () => {
-    const n = titleClicks + 1
-    setTitleClicks(n)
-    if (n >= 3) {
-      setTitleClicks(0)
-      onEgg?.()
-    }
-  }
+export default function Hero() {
+  const statVals = useCountup(2300)
 
   return (
-    <header className="hero">
-      {/* 左上角 #1 编号 */}
-      <div className="hero__index" aria-hidden="true">
-        <span className="hero__index-num">01</span>
-        <span className="hero__index-divider" />
-        <span className="hero__index-label">CURRENT STATUS</span>
-      </div>
+    <section className="hero" id="top" data-theme="ink">
+      {/* 全屏粒子中国地图：hero 的背景本身（对齐 CliVigil 的英雄页结构） */}
+      <ChinaMap />
+      <div className="hero__vignette" aria-hidden="true" />
 
-      {/* 右上角便签 */}
-      <StickyNote
-        text={'新版本正在打磨中，欢迎常来溜达 ✦'}
-        signature="— 071"
-        variant="yellow"
-        rotation={5}
-        withTape
-        className="hero__note hero__note--tl"
-        enterDelay={900}
-      />
+      <div className="hero__inner">
+        <div className="hero__mid">
+          <p className="eyebrow hero__eyebrow rv" style={{ '--d': '.18s' } as React.CSSProperties}>
+            HIT Shenzhen · CS / Economics · 2026
+          </p>
 
-      {/* 主标题 */}
-      <h1 className="hero__title" onClick={handleTitleClick} title="再点 2 下试试">
-        <span className="hero__title-cursor" aria-hidden="true" />
-        {titleText}
-        <span className="hero__title-handwritten" aria-hidden="true">
-          in progress
-        </span>
-      </h1>
+          <h1 className="wordmark" aria-label={WORDMARK}>
+            {WORDMARK.split('').map((ch, i) => (
+              <span
+                key={i}
+                className="wordmark__ch"
+                aria-hidden="true"
+                style={{ '--d': `${1.3 + i * 0.055}s` } as React.CSSProperties}
+              >
+                {ch === ' ' ? '\u00A0' : ch}
+              </span>
+            ))}
+          </h1>
 
-      {/* 副标 */}
-      <p className="hero__subtitle">
-        <span className="hero__subtitle-prefix" aria-hidden="true">→</span>
-        {subTyped}
-        {titleDone && subTyped.length < subText.length && <span className="hero__cursor" />}
-      </p>
+          <hr className="hero__rule rv-line" style={{ '--d': '2s' } as React.CSSProperties} />
 
-      {/* 说明段 */}
-      <p className="hero__desc">
-        正在重写这一版——做完之后会有更多东西。
-        <br />
-        而今迈步从头越。
-      </p>
+          <p className="hero__lede rv" style={{ '--d': '2.16s' } as React.CSSProperties}>
+            林巧，HITsz24级计算机与电子通信，主修计算机、辅修经济学
+            <br />
+            AI产品玩家&黑客松&游戏开发&软硬件&探索更多可能
+          </p>
 
-      {/* 互动小游戏提示：明确告诉访客"下面有得玩" */}
-      <a className="hero__game-hint" href="#play">
-        <span className="hero__game-hint-dino" aria-hidden="true">
-          <svg viewBox="0 0 40 26" width="40" height="26">
-            <g fill="var(--ink)">
-              {/* 尾巴：左下小尾巴 */}
-              <rect x="0" y="12" width="5" height="5" />
-              {/* 身体：横向长方形（霸王龙比例：长 > 高） */}
-              <rect x="4" y="9" width="22" height="9" />
-              {/* 头：靠在身体右上方，明显高出身体 */}
-              <rect x="20" y="0" width="16" height="12" />
-              {/* 张开的大嘴：嘴是张开的缺口，不是尖喙 */}
-              <rect x="31" y="9" width="6" height="3" fill="var(--bg)" />
-              {/* 眼睛：白色方块 */}
-              <rect x="24" y="3" width="3" height="3" fill="var(--bg)" />
-              <rect x="25" y="4" width="2" height="2" />
-              {/* 小短手（霸王龙特征） */}
-              <rect x="22" y="12" width="2" height="4" />
-              {/* 两条后腿 */}
-              <rect x="10" y="18" className="hero__dino-leg" width="3" height="6" />
-              <rect x="20" y="18" className="hero__dino-leg" width="3" height="6" />
-            </g>
-          </svg>
-        </span>
-        <span className="hero__game-hint-text">
-          下面有一只可以玩的小恐龙
-        </span>
-        <span className="hero__game-hint-arrow" aria-hidden="true">↓</span>
-      </a>
-
-      {/* 右侧竖排：施工中标签 */}
-      <aside className="hero__side-tag" aria-hidden="true">
-        <span>WORK</span>
-        <span>IN</span>
-        <span>PROGRESS</span>
-      </aside>
-
-      {/* 左侧底部：版本号 + 卷尺 */}
-      <div className="hero__meta">
-        <div className="hero__version">
-          <span className="hero__version-label">VER</span>
-          <span className="hero__version-num">26.07_3.0.0</span>
-          <span className="hero__version-soon">is coming</span>
+          <ul className="hero__facts rv" style={{ '--d': '2.34s' } as React.CSSProperties}>
+            <li><b>2026 美赛 O 奖</b>全球前 1% · 队长</li>
+            <li><b>腾讯云黑客松</b>华南 #3 · 769 分</li>
+            <li><b>辩论校赛冠军</b>全程最佳辩手</li>
+          </ul>
         </div>
-        <div className="hero__ruler" aria-hidden="true">
-          {Array.from({ length: 24 }).map((_, i) => (
-            <span key={i} className={`hero__ruler-tick ${i % 4 === 0 ? 'is-major' : ''}`} />
-          ))}
+
+        <div className="hero__bottom">
+          <div className="hero__bottom-left">
+            <div className="hero__stats rv" style={{ '--d': '2.3s' } as React.CSSProperties}>
+              {STATS.map((s, i) => (
+                <div className="hero__stat" key={s.label}>
+                  <b>{statVals[i]}</b>
+                  <span>{s.label}</span>
+                </div>
+              ))}
+            </div>
+            <div className="hero__credit rv" style={{ '--d': '2.44s' } as React.CSSProperties}>
+              <strong>林巧 / Lin Qiao · @Lin23-071</strong>
+              <br />
+              哈尔滨工业大学（深圳）· 工科试验班（计算机与电子通信）
+            </div>
+          </div>
+          <div className="scroll-cue rv" style={{ '--d': '2.6s' } as React.CSSProperties}>
+            <span className="scroll-cue__line" aria-hidden="true" />
+            <span>Scroll to explore</span>
+          </div>
         </div>
       </div>
-
-      {/* 漂浮便签 */}
-      <StickyNote
-        text={'预计…很快（吧）'}
-        variant="persimmon"
-        rotation={-7}
-        className="hero__note hero__note--br"
-        enterDelay={1200}
-      />
-    </header>
+    </section>
   )
 }

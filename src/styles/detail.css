@@ -1,0 +1,281 @@
+/* ==========================================================================
+   作品二级页 · 排版精修
+   在 index.css 之后加载，用 .detail 前缀保证覆盖基础规则
+   ========================================================================== */
+
+.detail .detail__panel {
+  width: min(1040px, 100%);
+  padding: clamp(28px, 4vw, 64px);
+  border-radius: 2px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.28);
+}
+
+.detail .detail__panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--c-electric), var(--c-glow));
+}
+
+/* --- 页头：小标签 / 大标题 / 元信息 ------------------------------------ */
+
+.detail .detail__head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 20px;
+  padding-bottom: clamp(20px, 2.6vh, 30px);
+}
+
+.detail__head-main { min-width: 0; }
+
+.detail .detail__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  color: #9ca3af;
+}
+
+.detail .detail__eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--c-electric);
+  flex: none;
+}
+
+.detail .detail__eyebrow span {
+  color: var(--c-electric);
+  letter-spacing: 0.12em;
+}
+
+.detail .detail__eyebrow span::before {
+  content: "/";
+  margin-right: 10px;
+  color: #d1d5db;
+}
+
+.detail .detail__title {
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  line-height: 1.14;
+  letter-spacing: 0.005em;
+}
+
+.detail .detail__subtitle {
+  margin: 14px 0 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+}
+
+.detail .detail__close { flex: none; }
+
+/* --- 导语：全宽 standfirst，左侧一道电蓝竖线 ---------------------------- */
+
+.detail .detail__lede {
+  margin: clamp(24px, 3vh, 34px) 0 clamp(34px, 4.4vh, 52px);
+  max-width: none;
+  padding-left: 22px;
+  border-left: 2px solid var(--c-electric);
+  font-size: clamp(15px, 1.25vw, 17.5px);
+  line-height: 2;
+  letter-spacing: 0.012em;
+  color: #374151;
+}
+
+/* --- 栏目标签：编号 + 英文 + 中文 + 延伸细线 ---------------------------- */
+
+.detail .detail__section-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 16px;
+}
+
+.detail .detail__section-head::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.detail .detail__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.detail .detail__label i {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--c-electric);
+}
+
+.detail .detail__label em {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+}
+
+/* --- 速览表 ------------------------------------------------------------- */
+
+.detail .detail__spec {
+  margin: 0 0 clamp(32px, 4vh, 48px);
+  border-color: #e5e7eb;
+  background: #e5e7eb;
+}
+
+.detail .detail__spec-row {
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 20px;
+  padding: 14px 18px;
+}
+
+.detail .detail__spec dt {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: #9ca3af;
+}
+
+.detail .detail__spec dd {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #111827;
+}
+
+.detail .detail__spec .detail__accent {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* --- 核心工作 ----------------------------------------------------------- */
+
+.detail .detail__points {
+  margin: 0 0 clamp(32px, 4vh, 48px);
+}
+
+.detail .detail__points li {
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 0;
+  font-size: 14px;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+  color: #374151;
+  border-bottom-color: #f0f1f3;
+}
+
+.detail .detail__points li > span {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  padding-top: 3px;
+}
+
+/* --- 截图：模糊同图铺底 + 完整 contain，竖图不再被裁 -------------------- */
+
+.detail .detail__shots {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  align-items: start;
+  gap: 12px;
+  margin: 0 0 clamp(32px, 4vh, 48px);
+}
+
+.detail .detail__shots button {
+  aspect-ratio: 16 / 10;
+  border: 1px solid #e5e7eb;
+  border-radius: 2px;
+  background: #0c0e14;
+}
+
+/* 竖图给足高度，保持原始比例完整显示 */
+.detail .detail__shots button.is-portrait {
+  aspect-ratio: auto;
+  height: 260px;
+}
+
+.detail .detail__shots .detail__shot-bg {
+  position: absolute;
+  inset: -12%;
+  display: block;
+  width: 124%;
+  height: 124%;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.5) saturate(0.9);
+  transform: scale(1.06);
+}
+
+.detail .detail__shots .detail__shot-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  object-fit: contain;
+  transition: transform 520ms var(--ease-out-quint);
+}
+
+.detail .detail__shots button:hover .detail__shot-img {
+  transform: scale(1.05);
+}
+
+.detail .detail__shots button > span {
+  left: 10px;
+  bottom: 10px;
+  background: rgba(10, 10, 10, 0.66);
+  letter-spacing: 0.12em;
+}
+
+/* --- 页脚 --------------------------------------------------------------- */
+
+.detail .detail__foot {
+  padding-top: clamp(20px, 2.6vh, 28px);
+}
+
+.detail .detail__go {
+  padding: 12px 20px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+}
+
+.detail .detail__pager { gap: 16px; }
+
+.detail .detail__pager button {
+  padding: 7px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 99px;
+  font-size: 10.5px;
+  transition: border-color var(--t-micro) var(--ease-micro),
+              color var(--t-micro) var(--ease-micro);
+}
+
+.detail .detail__pager button:hover {
+  border-color: var(--c-electric);
+  color: var(--c-electric);
+}
+
+@media (max-width: 640px) {
+  .detail .detail__spec-row { grid-template-columns: 1fr; gap: 6px; }
+  .detail .detail__lede { padding-left: 16px; }
+  .detail .detail__shots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

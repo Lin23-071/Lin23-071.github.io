@@ -1,0 +1,79 @@
+/* ==========================================================================
+   071 设计令牌 —— 参考 CliVigil 三色主题：黑（响）/ 白（静）/ 蓝（响）
+   ========================================================================== */
+
+:root {
+  /* --- 黑区（响） ------------------------------------------------------ */
+  --c-ink:        #0A0A0A;
+  --c-ink-soft:   #141414;
+  --c-ink-line:   rgba(255, 255, 255, 0.14);
+  --c-ink-text:   #FFFFFF;
+  --c-ink-muted:  #9CA3AF;
+
+  /* --- 白区（静） ------------------------------------------------------ */
+  --c-paper:      #FFFFFF;
+  --c-paper-line: #E5E7EB;
+  --c-paper-text: #0A0A0A;
+  --c-paper-muted: #4B5563;
+
+  /* --- 蓝区（响） ------------------------------------------------------ */
+  --c-electric:       #1E3BFF;
+  --c-electric-hi:    #4D63FF;
+  --c-electric-text:  #FFFFFF;
+  --c-electric-muted: #C7D0FF;
+
+  /* --- 强调 ------------------------------------------------------------ */
+  --c-glow: #4DA3FF;
+  --c-warm: #FF8A3D;
+
+  /* --- 当前主题（由 .theme-ink / .theme-paper / .theme-electric 覆盖） -- */
+  --bg:       var(--c-ink);
+  --fg:       var(--c-ink-text);
+  --fg-muted: var(--c-ink-muted);
+  --line:     var(--c-ink-line);
+  --bg-veil:  rgba(10, 10, 10, 0.66);
+
+  /* --- 缓动 ------------------------------------------------------------ */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-micro:     cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-back:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- 时长 ------------------------------------------------------------ */
+  --t-micro: 160ms;
+  --t-enter: 420ms;
+  --t-theme: 420ms;
+
+  /* --- 字体 ------------------------------------------------------------ */
+  /* 西文显示：Bricolage Grotesque 变量（wght + wdth 双轴，字形不规则、有手工感） */
+  --font-display: "Bricolage Grotesque Variable", "Segoe UI", sans-serif;
+  /* 中文标题：站酷小薇（宋黑混血，比系统黑体有笔锋与性格） */
+  --font-cjk: "ZCOOL XiaoWei", "Songti SC", "STSong", "SimSun", serif;
+  /* 强调：Instrument Serif 斜体（editorial 感，用于金句/英文短句） */
+  --font-serif: "Instrument Serif", "Times New Roman", Georgia, serif;
+  --font-sans: "Segoe UI Variable Display", "Segoe UI", Inter,
+               -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+               "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas,
+               "Liberation Mono", monospace;
+
+  /* --- 间距 ------------------------------------------------------------ */
+  --gutter: clamp(20px, 3.4vw, 56px);
+  --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 40px; --s5: 64px; --s6: 104px;
+
+  /* --- 布局 ------------------------------------------------------------ */
+  --topbar-h: 72px;
+}
+
+.theme-ink      { --bg: var(--c-ink);      --fg: var(--c-ink-text);
+                  --fg-muted: var(--c-ink-muted);   --line: var(--c-ink-line);
+                  --bg-veil: rgba(10, 10, 10, 0.66); }
+
+.theme-paper    { --bg: var(--c-paper);    --fg: var(--c-paper-text);
+                  --fg-muted: var(--c-paper-muted); --line: var(--c-paper-line);
+                  --bg-veil: rgba(255, 255, 255, 0.78); }
+
+.theme-electric { --bg: var(--c-electric); --fg: var(--c-electric-text);
+                  --fg-muted: var(--c-electric-muted);
+                  --line: rgba(255, 255, 255, 0.28);
+                  --bg-veil: rgba(30, 59, 255, 0.74); }
